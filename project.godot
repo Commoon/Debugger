@@ -1,0 +1,60 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Node2D",
+"class": "Bug",
+"language": "GDScript",
+"path": "res://Work/Bug.gd"
+}, {
+"base": "Node2D",
+"class": "GameManager",
+"language": "GDScript",
+"path": "res://Game/Game.gd"
+}, {
+"base": "Node2D",
+"class": "Player",
+"language": "GDScript",
+"path": "res://Work/Player.gd"
+}, {
+"base": "Node2D",
+"class": "Work",
+"language": "GDScript",
+"path": "res://Work/Work.gd"
+} ]
+_global_script_class_icons={
+"Bug": "",
+"GameManager": "",
+"Player": "",
+"Work": ""
+}
+
+[application]
+
+config/name="Debuggers"
+run/main_scene="res://Game/Game.tscn"
+
+[autoload]
+
+Utils="*res://Game/Utils.gd"
+
+[display]
+
+window/size/width=1280
+window/size/height=960
+window/dpi/allow_hidpi=true
+window/stretch/mode="2d"
+window/stretch/aspect="keep"
+
+[layer_names]
+
+2d_physics/layer_1="Player"
+2d_physics/layer_2="Bug"
+2d_physics/layer_3="Wall"
