@@ -22,11 +22,11 @@ func _ready():
     self.weight_coeff = 1.0
     .start(start_pos)
     self.speed = rand_range(speed_min, speed_max)
-    print("Harmonic: ", start_pos, end_pos)
 
 func update_func(dt):
     time += dt
-    var y = self.amplitude * sin(2 * PI / self.period * time)
-    var pos = self.start_pos + self.direction * time * self.speed
-    pos += self.y_direction * y
+    var y = amplitude * sin(2 * PI / period * time)
+    var pos = start_pos + direction * time * speed
+    pos += y_direction * y
+    .set_rotate(pos - self.position)
     self.position = pos

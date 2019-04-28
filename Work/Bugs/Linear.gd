@@ -12,11 +12,10 @@ func _ready():
     var start_pos = Utils.random_pos_border(Utils.Direction.Down)
     var start_dir = Utils.get_direction(start_pos)
     var end_pos = Utils.random_pos_border(start_dir)
-    self.direction = (end_pos - start_pos).normalized()
+    direction = (end_pos - start_pos).normalized()
     .start(start_pos)
-    self.speed = rand_range(speed_min, speed_max)
-    print("Linear: ", start_pos, end_pos)
+    .set_rotate(direction)
 
 
 func update_func(dt):
-    self.position += self.speed * dt * self.direction
+    self.position += self.speed * dt * direction

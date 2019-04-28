@@ -2,11 +2,14 @@ extends Node2D
 
 class_name Player
 
+signal attack_over
+signal missed
+signal catched
 signal debugged
 
 export var attack_speed: float = 450
 export var return_speed: float = 800
-export var catch_speed: float = 500
+export var catch_speed: float = 600
 
 var attacking := 0
 var direction: Vector2
@@ -31,7 +34,7 @@ func _physics_process(delta):
     elif self.attacking == 3:
         if not is_instance_valid(self.current_bug):
             return
-        self.attacking_point.position -= self.direction * delta * self.catch_speed * self.current_bug.weight_coeff
+        self.attacking_point.position -= self.direction * delta * self.catch_speed * self.current_bug.weight_coeff * self.current_bug.size
         self.current_bug.global_position = self.attacking_point.global_position
 
 func _on_AttackingPoint_body_entered(body):
@@ -43,12 +46,14 @@ func _on_AttackingPoint_body_entered(body):
         bug.is_catched = true
         self.current_bug = bug
         self.attacking = 3
+        emit_signal("catched", bug)
         if self.tongue_in_body:
             self.eat()
 
 func _on_AttackingPoint_area_entered(area: Area2D):
     if self.attacking == 1 and area.get_collision_layer_bit(Utils.Layer.Wall):
         self.attacking = 2
+        emit_signal("missed")
 
 func eat():
     self.attacking_point.position = Vector2.ZERO
@@ -63,6 +68,7 @@ func _on_Body_area_entered(area):
     if area.get_parent() != self:
         return
     self.tongue_in_body = true
+    emit_signal("attack_over")
     if self.attacking == 2 or self.attacking == 3:
         self.eat()
 

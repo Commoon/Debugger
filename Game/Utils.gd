@@ -44,3 +44,6 @@ func random_pos_border(exclude=Direction.Unknown) -> Vector2:
         Vector2(OUT_RIGHT, r - OUT_HEIGHT - OUT_WIDTH + OUT_UP) if r < OUT_HEIGHT * 2 + OUT_WIDTH else \
         Vector2(OUT_RIGHT - (r - OUT_HEIGHT * 2 - OUT_WIDTH), OUT_DOWN)
     return random_pos_border(exclude) if get_direction(d) == exclude else d
+
+func random_pos_area(area=Rect2(0, 0, IN_WIDTH, IN_HEIGHT)) -> Vector2:
+    return Vector2(randf(), randf()) * area.size + area.position
