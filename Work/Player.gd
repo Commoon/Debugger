@@ -10,32 +10,63 @@ signal debugged
 export var attack_speed: float = 450
 export var return_speed: float = 800
 export var catch_speed: float = 600
+export var body_radius := 70
 
 var attacking := 0
 var direction: Vector2
 
+var speed_scale := 1.0
+
 var current_bug: Bug = null
 
+onready var body := $Body
+onready var tongue := $Body/Tongue
 onready var attacking_point := $AttackingPoint
 var tongue_in_body := true
 
+onready var slacking_off_sprites := [
+    $"SlackingOff-Phone",
+    $"SlackingOff-ZZZ"
+]
+var slacking_off := -1
+
 
 func attack(direction):
-    if self.attacking > 0:
+    if slacking_off >= 0 or self.attacking > 0:
         return
     self.direction = direction
     self.attacking = 1
 
+func slack_off(ok):
+    if ok and slacking_off == -1:
+        slacking_off = int(floor(randf() * len(slacking_off_sprites)))
+        body.visible = false
+        slacking_off_sprites[slacking_off].visible = true
+    elif not ok and slacking_off >= 0:
+        slacking_off_sprites[slacking_off].visible = false
+        body.visible = true
+        slacking_off = -1
+
+func rotate(phi: float):
+    self.rotation = phi + PI / 2
+
+func set_speed_scale(scale: float):
+    self.speed_scale = scale
+
 func _physics_process(delta):
+    delta *= speed_scale
     if self.attacking == 1:
-        self.attacking_point.position += self.direction * delta * self.attack_speed
+        self.attacking_point.global_position += self.direction * delta * self.attack_speed
     elif self.attacking == 2:
-        self.attacking_point.position -= self.direction * delta * self.return_speed
+        self.attacking_point.global_position -= self.direction * delta * self.return_speed
     elif self.attacking == 3:
         if not is_instance_valid(self.current_bug):
             return
-        self.attacking_point.position -= self.direction * delta * self.catch_speed * self.current_bug.weight_coeff * self.current_bug.size
+        self.attacking_point.global_position -= self.direction * delta * self.catch_speed * self.current_bug.weight_coeff * self.current_bug.size
         self.current_bug.global_position = self.attacking_point.global_position
+    var l = (self.attacking_point.global_position - self.global_position).length() - body_radius
+    tongue.offset = Vector2.UP * l / 2
+    tongue.region_rect.size.y = l
 
 func _on_AttackingPoint_body_entered(body):
     if self.attacking != 1:
@@ -56,7 +87,7 @@ func _on_AttackingPoint_area_entered(area: Area2D):
         emit_signal("missed")
 
 func eat():
-    self.attacking_point.position = Vector2.ZERO
+    self.attacking_point.position = Vector2.UP * body_radius
     self.attacking = 0
     if self.current_bug != null:
         self.current_bug.visible = false

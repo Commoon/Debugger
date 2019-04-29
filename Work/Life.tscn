@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Assets/Work/UI/Life-Background.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Work/UI/Life-Border.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Work/UI/Life-Content.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Work/UI/Life-Icon.png" type="Texture" id=4]
+
+[node name="Life" type="TextureProgress"]
+editor/display_folded = true
+margin_left = 91.0
+margin_top = 34.0
+margin_right = 556.0
+margin_bottom = 82.0
+texture_under = ExtResource( 1 )
+texture_over = ExtResource( 2 )
+texture_progress = ExtResource( 3 )
+
+[node name="Icon" type="TextureRect" parent="."]
+margin_left = -77.0
+margin_top = -7.0
+margin_right = -3.0
+margin_bottom = 55.0
+texture = ExtResource( 4 )
+

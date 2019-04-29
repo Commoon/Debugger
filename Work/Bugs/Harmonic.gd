@@ -1,7 +1,7 @@
 extends Bug
 
 export var speed_min: float = 200
-export var speed_max: float = 400
+export var speed_max: float = 600
 export var amplitude_min: float = 100
 export var amplitude_max: float = 160
 export var period_min: float = 3
@@ -18,10 +18,8 @@ onready var period := rand_range(period_min, period_max)
 onready var amplitude := rand_range(amplitude_min, amplitude_max)
 
 func _ready():
-    self.value = 20
-    self.weight_coeff = 1.0
-    .start(start_pos)
-    self.speed = rand_range(speed_min, speed_max)
+    var difficulty = pow(1 - (1 - (speed - speed_min) / (speed_max - speed_min)), 2)
+    .start(start_pos, difficulty)
 
 func update_func(dt):
     time += dt

@@ -1,0 +1,187 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Work/ResultList.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Work/ResultList/Background.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Others/SourceSansFont.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Others/CustomText.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Assets/Work/ResultList/Bug3.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Work/ResultList/Bug2.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Work/ResultList/Bug1.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Work/ResultList/Line.png" type="Texture" id=8]
+[ext_resource path="res://Work/Life.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Assets/Work/ResultList/Pass.png" type="Texture" id=10]
+
+[node name="ResultList" type="Control"]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="Dialog" type="TextureRect" parent="."]
+margin_left = 373.0
+margin_top = 173.0
+margin_right = 906.0
+margin_bottom = 852.0
+texture = ExtResource( 2 )
+
+[node name="CurrentBalance-Label" type="Label" parent="Dialog"]
+anchor_right = 0.5
+margin_left = 80.0
+margin_top = 32.7051
+margin_right = 66.5
+margin_bottom = 94.7051
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Balance"
+
+[node name="CurrentBalance" parent="Dialog" instance=ExtResource( 4 )]
+position = Vector2( 468.822, 63.7051 )
+font_size = 40
+text = "100"
+aligned = 1
+
+[node name="Bug3-Icon" type="Sprite" parent="Dialog"]
+editor/display_folded = true
+position = Vector2( 94.9734, 153.705 )
+texture = ExtResource( 5 )
+
+[node name="Bug3-Score" parent="Dialog/Bug3-Icon" instance=ExtResource( 4 )]
+position = Vector2( 63.7866, 0 )
+font_size = 40
+text = "10 *"
+
+[node name="Bug3-Count" parent="Dialog" instance=ExtResource( 4 )]
+position = Vector2( 319.378, 153.705 )
+font_size = 40
+text = "13"
+aligned = 1
+
+[node name="Bug3-Equal" parent="Dialog" instance=ExtResource( 4 )]
+position = Vector2( 366.865, 153.705 )
+font_size = 40
+text = "="
+
+[node name="Bug3" parent="Dialog" instance=ExtResource( 4 )]
+position = Vector2( 468.822, 153.705 )
+font_size = 40
+text = "130"
+aligned = 1
+
+[node name="Bug2-Icon" type="Sprite" parent="Dialog"]
+editor/display_folded = true
+position = Vector2( 94.9734, 233.705 )
+texture = ExtResource( 6 )
+
+[node name="Bug2-Score" parent="Dialog/Bug2-Icon" instance=ExtResource( 4 )]
+position = Vector2( 63.7866, 0 )
+font_size = 40
+text = "20 *"
+
+[node name="Bug2-Count" parent="Dialog" instance=ExtResource( 4 )]
+position = Vector2( 319.378, 233.705 )
+font_size = 40
+text = "4"
+aligned = 1
+
+[node name="Bug2-Equal" parent="Dialog" instance=ExtResource( 4 )]
+position = Vector2( 366.865, 233.705 )
+font_size = 40
+text = "="
+
+[node name="Bug2" parent="Dialog" instance=ExtResource( 4 )]
+position = Vector2( 468.822, 233.705 )
+font_size = 40
+text = "80"
+aligned = 1
+
+[node name="Bug1-Icon" type="Sprite" parent="Dialog"]
+editor/display_folded = true
+position = Vector2( 94.9734, 313.705 )
+texture = ExtResource( 7 )
+
+[node name="Bug1-Score" parent="Dialog/Bug1-Icon" instance=ExtResource( 4 )]
+position = Vector2( 63.7866, 0 )
+font_size = 40
+text = "30 *"
+
+[node name="Bug1-Count" parent="Dialog" instance=ExtResource( 4 )]
+position = Vector2( 319.378, 313.705 )
+font_size = 40
+text = "5"
+aligned = 1
+
+[node name="Bug1-Equal" parent="Dialog" instance=ExtResource( 4 )]
+position = Vector2( 366.865, 313.705 )
+font_size = 40
+text = "="
+
+[node name="Bug1" parent="Dialog" instance=ExtResource( 4 )]
+position = Vector2( 468.822, 313.705 )
+font_size = 40
+text = "150"
+aligned = 1
+
+[node name="Line" type="Sprite" parent="Dialog"]
+position = Vector2( 280.033, 353.981 )
+texture = ExtResource( 8 )
+
+[node name="NewBalance-Label" type="Label" parent="Dialog"]
+anchor_right = 0.5
+margin_left = 80.0
+margin_top = 356.705
+margin_right = 71.5
+margin_bottom = 418.705
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "New Balance"
+
+[node name="NewBalance" parent="Dialog" instance=ExtResource( 4 )]
+position = Vector2( 468.822, 387.705 )
+font_size = 40
+text = "360"
+aligned = 1
+
+[node name="Life-Label" type="Label" parent="Dialog"]
+anchor_right = 0.5
+margin_left = 80.0
+margin_top = 436.705
+margin_right = -114.5
+margin_bottom = 498.705
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Life"
+
+[node name="Life-Bar" parent="Dialog" instance=ExtResource( 9 )]
+margin_left = 205.0
+margin_top = 453.305
+margin_right = 670.0
+margin_bottom = 501.305
+rect_scale = Vector2( 0.6, 0.6 )
+value = 65.0
+
+[node name="Life" parent="Dialog" instance=ExtResource( 4 )]
+position = Vector2( 344.5, 467.705 )
+font_size = 40
+text = "65/100"
+aligned = 2
+
+[node name="Score-Label" type="Label" parent="Dialog"]
+anchor_right = 0.5
+margin_left = 80.0
+margin_top = 516.705
+margin_right = -71.5
+margin_bottom = 578.705
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Score"
+
+[node name="Score" parent="Dialog" instance=ExtResource( 4 )]
+position = Vector2( 468.822, 547.705 )
+font_size = 40
+text = "1120/1090"
+aligned = 1
+
+[node name="Pass" type="Sprite" parent="Dialog"]
+position = Vector2( 127.5, 588 )
+texture = ExtResource( 10 )
+

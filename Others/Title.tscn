@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://Game/Title.gd" type="Script" id=1]
+[ext_resource path="res://Others/Title.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Title/Background.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Title/Button-Start.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Title/Button-Start-Hover.png" type="Texture" id=4]
@@ -35,7 +35,6 @@ disabled = true
 texture_normal = ExtResource( 5 )
 texture_hover = ExtResource( 6 )
 texture_disabled = ExtResource( 7 )
-texture_focused = ExtResource( 6 )
 
 [connection signal="pressed" from="Start" to="." method="_on_Start_pressed"]
 [connection signal="pressed" from="Continue" to="." method="_on_Continue_pressed"]

@@ -1,7 +1,11 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Work/Player.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Work/simple-white.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Work/Player/Life.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Work/Player/Tongue.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Work/Player/Body.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Work/Player/SlackingOff-Phone.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Work/Player/SlackingOff-ZZZ.png" type="Texture" id=6]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 72.0
@@ -12,26 +16,40 @@ radius = 16.0
 [node name="Player" type="Node2D"]
 script = ExtResource( 1 )
 
+[node name="Leaf" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
 [node name="Body" type="Area2D" parent="."]
 
+[node name="Tongue" type="Sprite" parent="Body"]
+position = Vector2( 0, -72 )
+texture = ExtResource( 3 )
+offset = Vector2( 0, -379.5 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 37, 759 )
+
 [node name="Sprite" type="Sprite" parent="Body"]
-modulate = Color( 0.478431, 1, 0.427451, 1 )
-texture = ExtResource( 2 )
+texture = ExtResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
 shape = SubResource( 1 )
 
-[node name="Tongue" type="Sprite" parent="."]
-
 [node name="AttackingPoint" type="Area2D" parent="."]
+position = Vector2( 0, -72 )
 collision_mask = 6
-
-[node name="Sprite" type="Sprite" parent="AttackingPoint"]
-scale = Vector2( 0.2, 0.2 )
-texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackingPoint"]
 shape = SubResource( 2 )
+
+[node name="SlackingOff-Phone" type="Sprite" parent="."]
+visible = false
+position = Vector2( 10.1919, -14.8361 )
+texture = ExtResource( 5 )
+
+[node name="SlackingOff-ZZZ" type="Sprite" parent="."]
+visible = false
+position = Vector2( 68.7663, -36.97 )
+texture = ExtResource( 6 )
 
 [connection signal="area_entered" from="Body" to="." method="_on_Body_area_entered"]
 [connection signal="area_exited" from="Body" to="." method="_on_Body_area_exited"]

@@ -12,14 +12,13 @@ var direction: Vector2
 
 
 func _ready():
-    self.value = 20
-    self.weight_coeff = 1.0
     vertices.push_back(Utils.random_pos_border())
     for i in range(n_vertices):
         var x = Utils.random_pos_area()
         vertices.push_back(x)
     vertices.push_back(Utils.random_pos_border())
-    .start(vertices[0])
+    var difficulty = pow(1 - (1 - (speed - speed_min) / (speed_max - speed_min)), 2)
+    .start(vertices[0], difficulty)
     move_to_next()
 
 func move_to_next():
