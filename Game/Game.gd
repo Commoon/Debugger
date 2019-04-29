@@ -211,7 +211,7 @@ func _ready():
 func pause():
     paused = true
     get_tree().paused = true
-    if self.current_scene_type == SceneType.Title:
+    if self.current_scene_type == SceneType.Opening or self.current_scene_type == SceneType.Title:
         confirm_dialog_text.text = "Sure to Exit?"
     else:
         confirm_dialog_text.text = "Return to Title?"
@@ -223,14 +223,16 @@ func resume():
     get_tree().paused = false
 
 func _input(event):
-    if not paused and event is InputEventKey and event.scancode == KEY_ESCAPE:
+    if event.is_action_pressed("toggle_fullscreen"):
+        OS.window_fullscreen = !OS.window_fullscreen
+    elif not paused and event is InputEventKey and event.scancode == KEY_ESCAPE:
         pause()
 
 func _on_No_pressed():
     resume()
 
 func _on_Yes_pressed():
-    if self.current_scene_type == SceneType.Title:
+    if self.current_scene_type == SceneType.Opening or self.current_scene_type == SceneType.Title:
         get_tree().quit()
     else:
         start_title()

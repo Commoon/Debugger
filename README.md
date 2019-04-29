@@ -1,32 +1,18 @@
-# TexturePacker Importer
-
-This is a plugin for [Godot Engine](https://godotengine.org) to import
-`TileSet`s and `AtlasTexture`s from the [TexturePacker](https://www.codeandweb.com/texturepacker)
-
-**Note: This is compatible only with Godot 3.0 or later.**
+# Debugger
 
 
-## Installation
+Made for [Ludum Dare 44](https://ldjam.com/events/ludum-dare/44/$144762).
 
-Simply download it from [Godot Asset Library](https://godotengine.org/asset-library/asset/169)
-
-Alternatively, download or clone this repository and copy the contents of the
-`addons` folder to your own project's `addons` folder.
-
-Important: Enable the plugin on the Project Settings.
-
-## Features
-
-* Import sprite sheets as AtlasTextures
-* Import sprite sheets as TileSets
-* Supports trimmed sprites (margin)
-* Supports MultiPack
-
-## Usage (once the plugin is enabled)
-
-1. Save your sprite sheets / tile maps in your project folder
-2. Watch Godot import it automatically.
+Play in your browser: [https://vilja.itch.io/debugger](https://vilja.itch.io/debugger)
 
 ## License
 
-[MIT License](LICENSE). Copyright (c) 2018 Andreas Loew / CodeAndWeb GmbH
+The code part is open-sourced under the [MIT License](./LICENSE), and the other assets (including graphics and sound
+ effects) are shared under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+
+[![CC-BY-NC-SA](https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png)](http://creativecommons.org/licenses/by-nc-sa/4.0/)
+
+
+Special attribution:
+
+The BGMs are from [www.soundimage.org](www.soundimage.org) by Eric Matyas.
