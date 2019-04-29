@@ -31,8 +31,11 @@ onready var slacking_off_sprites := [
 var slacking_off := -1
 
 
+func can_attack():
+    return slacking_off < 0 and self.attacking == 0
+
 func attack(direction):
-    if slacking_off >= 0 or self.attacking > 0:
+    if not can_attack():
         return
     self.direction = direction
     self.attacking = 1
@@ -83,8 +86,11 @@ func _on_AttackingPoint_body_entered(body):
 
 func _on_AttackingPoint_area_entered(area: Area2D):
     if self.attacking == 1 and area.get_collision_layer_bit(Utils.Layer.Wall):
+        if self.tongue_in_body:
+            self.eat()
+            return
         self.attacking = 2
-        emit_signal("missed")
+        emit_signal("missed", attacking_point.global_position)
 
 func eat():
     self.attacking_point.position = Vector2.UP * body_radius

@@ -40,7 +40,7 @@ func start(life, money, buffs, n_coffee):
     self.n_coffee = n_coffee
 
 func _on_NextDay_pressed():
-    emit_signal("next_day")
+    $Transition.show()
 
 func _on_item_pressed(in_life_shop, item_id, pos_node):
     var item = (life_shop if in_life_shop else money_shop)[item_id]
@@ -57,6 +57,8 @@ func _on_item_pressed(in_life_shop, item_id, pos_node):
     dialog.get_node("Price").text = str(item["price"]) + "/" + str(balance)
     selected_in_life_shop = in_life_shop
     selected_item_id = item_id
+    Utils.play_sound()
+    $Transition.visible = false
     dialog.visible = true
 
 
@@ -68,9 +70,14 @@ func _on_Buy_pressed():
     if item["price"] > balance:
         return
     dialog.visible = false
+    Utils.play_sound(Utils.SoundEffect.Shop)
     emit_signal("buy", selected_in_life_shop, selected_item_id, item)
 
 
 func _unhandled_input(event):
     if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and not event.pressed:
         dialog.visible = false
+
+
+func _on_Transition_pressed():
+    emit_signal("next_day")

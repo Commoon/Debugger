@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Work/Work.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Work/UI/Background.png" type="Texture" id=2]
@@ -11,12 +11,20 @@
 [ext_resource path="res://Others/CustomText.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Assets/Work/UI/CoffeeCounts.png" type="Texture" id=10]
 [ext_resource path="res://Assets/Work/UI/Level.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Others/SourceSansPro-Regular.ttf" type="DynamicFontData" id=12]
+[ext_resource path="res://Assets/Work/UI/Animation.anim" type="Animation" id=13]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 710, 10 )
+[sub_resource type="CircleShape2D" id=1]
 
 [sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 710, 10 )
+
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 10, 550 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 42
+font_data = ExtResource( 12 )
 
 [node name="Work" type="Node2D"]
 script = ExtResource( 1 )
@@ -27,29 +35,37 @@ margin_bottom = 960.0
 texture = ExtResource( 2 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
-position = Vector2( 640, 640 )
+position = Vector2( 640, 830 )
 
 [node name="Bugs" type="Node2D" parent="."]
 
+[node name="TargetPoint" type="Area2D" parent="."]
+editor/display_folded = true
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TargetPoint"]
+shape = SubResource( 1 )
+
 [node name="Walls" type="Area2D" parent="."]
+editor/display_folded = true
 collision_layer = 4
 collision_mask = 3
 
 [node name="Top" type="CollisionShape2D" parent="Walls"]
 position = Vector2( 640, -70 )
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="Bottom" type="CollisionShape2D" parent="Walls"]
 position = Vector2( 640, 1030 )
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="Left" type="CollisionShape2D" parent="Walls"]
 position = Vector2( -70, 480 )
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 
 [node name="Right" type="CollisionShape2D" parent="Walls"]
 position = Vector2( 1350, 480 )
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 
 [node name="UI" type="Control" parent="."]
 margin_right = 1280.0
@@ -104,6 +120,7 @@ text = "0"
 aligned = 2
 
 [node name="CoffeeCounts" type="TextureRect" parent="UI"]
+editor/display_folded = true
 margin_left = 10.0
 margin_top = 886.0
 margin_right = 112.0
@@ -137,6 +154,34 @@ texture = ExtResource( 11 )
 [node name="Number" parent="UI/Level" instance=ExtResource( 9 )]
 position = Vector2( 154, 41.5 )
 text = "10"
+
+[node name="GoofingOff" type="Label" parent="UI"]
+visible = false
+modulate = Color( 1, 1, 1, 0.729423 )
+margin_left = 596.907
+margin_top = 111.543
+margin_right = 956.907
+margin_bottom = 165.543
+custom_fonts/font = SubResource( 4 )
+custom_colors/font_color = Color( 0.0901961, 0.211765, 0.345098, 1 )
+text = "Press \"Z\" to goof off."
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/GoofingOff"]
+anims/Flash = ExtResource( 13 )
+
+[node name="DrinkPrompt" type="Label" parent="UI"]
+visible = false
+modulate = Color( 1, 1, 1, 0.719036 )
+margin_left = 13.5663
+margin_top = 829.037
+margin_right = 376.566
+margin_bottom = 883.037
+custom_fonts/font = SubResource( 4 )
+custom_colors/font_color = Color( 0.0901961, 0.211765, 0.345098, 1 )
+text = "Press Space to drink."
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/DrinkPrompt"]
+anims/Flash = ExtResource( 13 )
 
 [connection signal="attack_over" from="Player" to="." method="_on_Player_attack_over"]
 [connection signal="catched" from="Player" to="." method="_on_Player_catched"]

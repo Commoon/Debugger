@@ -52,11 +52,13 @@ _global_script_class_icons={
 
 config/name="Debugger"
 run/main_scene="res://Game/Game.tscn"
+config/icon="res://Assets/Others/icon.png"
 
 [autoload]
 
 Utils="*res://Others/Utils.gd"
 BugTypes="*res://Others/BugTypes.gd"
+Timers="*res://Others/Timers.gd"
 
 [display]
 

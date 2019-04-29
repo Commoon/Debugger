@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/BGM-Title_Shop.ogg-5c2a91894f4679dcf8aee3bafe583b39.oggstr"
+
+[deps]
+
+source_file="res://Assets/Audio/BGM-Title_Shop.ogg"
+dest_files=[ "res://.import/BGM-Title_Shop.ogg-5c2a91894f4679dcf8aee3bafe583b39.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

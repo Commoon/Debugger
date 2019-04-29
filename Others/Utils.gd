@@ -23,7 +23,7 @@ const OUT_DOWN = IN_HEIGHT - OUT_UP
 const OUT_WIDTH = OUT_RIGHT - OUT_LEFT
 const OUT_HEIGHT = OUT_DOWN - OUT_UP
 
-const VERSION_NUMBER = "0.1.0"
+const VERSION_NUMBER = "0.2.3"
 const SAVE_FILENAME = "user://data.save"
 
 const CHAR_TEXTURES = {
@@ -42,6 +42,22 @@ const CHAR_TEXTURES = {
     "=": preload("res://Assets/Others/Numbers/=.png")
 }
 
+enum SoundEffect {
+    Hit, Select, Shop, Tongue
+}
+onready var sound_effect_resources = {
+    SoundEffect.Hit: preload("res://Assets/Audio/Hit.wav"),
+    SoundEffect.Select: preload("res://Assets/Audio/Select.wav"),
+    SoundEffect.Shop: preload("res://Assets/Audio/Shop.wav"),
+    SoundEffect.Tongue: preload("res://Assets/Audio/Tongue.wav"),
+}
+var audio_player: AudioStreamPlayer = null
+
+func play_sound(type=SoundEffect.Select):
+    if audio_player == null:
+        return
+    audio_player.stream = sound_effect_resources[type]
+    audio_player.play()
 
 func _ready():
     randomize()

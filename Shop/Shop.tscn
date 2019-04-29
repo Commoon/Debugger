@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Shop/Shop.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Shop/Background.png" type="Texture" id=2]
@@ -16,6 +16,8 @@
 [ext_resource path="res://Others/CustomText.tscn" type="PackedScene" id=14]
 [ext_resource path="res://Assets/Shop/ButtonBuy.png" type="Texture" id=15]
 [ext_resource path="res://Assets/Shop/ButtonBuy-Hover.png" type="Texture" id=16]
+[ext_resource path="res://Assets/Shop/Instruction.png" type="Texture" id=17]
+[ext_resource path="res://Assets/Shop/Transition.png" type="Texture" id=18]
 
 [sub_resource type="DynamicFont" id=1]
 size = 34
@@ -79,6 +81,7 @@ stretch_mode = 3
 position = Vector2( 45.5896, -3.3938 )
 
 [node name="Dialog" type="Control" parent="."]
+visible = false
 margin_right = 370.0
 margin_bottom = 350.0
 
@@ -87,10 +90,10 @@ texture = ExtResource( 11 )
 centered = false
 
 [node name="Label" type="Label" parent="Dialog"]
-margin_left = 24.0
-margin_top = 26.0
-margin_right = 349.0
-margin_bottom = 170.0
+margin_left = 20.0
+margin_top = 31.0
+margin_right = 362.0
+margin_bottom = 175.0
 custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Life gets stronger.
@@ -116,5 +119,19 @@ margin_bottom = 275.526
 texture_normal = ExtResource( 15 )
 texture_hover = ExtResource( 16 )
 
+[node name="Instruction" type="TextureRect" parent="."]
+margin_left = 24.0
+margin_top = 23.0
+margin_right = 1254.0
+margin_bottom = 113.0
+texture = ExtResource( 17 )
+
+[node name="Transition" type="TextureButton" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+texture_normal = ExtResource( 18 )
+
 [connection signal="pressed" from="NextDay" to="." method="_on_NextDay_pressed"]
 [connection signal="pressed" from="Dialog/Buy" to="." method="_on_Buy_pressed"]
+[connection signal="pressed" from="Transition" to="." method="_on_Transition_pressed"]

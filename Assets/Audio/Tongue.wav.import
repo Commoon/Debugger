@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/Shop.wav-eb80194c365c6e703bbb164d3766baa6.sample"
+path="res://.import/Tongue.wav-3bbbc890cdf56209c01ebd7b2d575d00.sample"
 
 [deps]
 
-source_file="res://Assets/SoundEffect/Shop.wav"
-dest_files=[ "res://.import/Shop.wav-eb80194c365c6e703bbb164d3766baa6.sample" ]
+source_file="res://Assets/Audio/Tongue.wav"
+dest_files=[ "res://.import/Tongue.wav-3bbbc890cdf56209c01ebd7b2d575d00.sample" ]
 
 [params]
 

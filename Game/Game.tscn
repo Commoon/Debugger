@@ -54,5 +54,12 @@ margin_bottom = 310.0
 texture_normal = ExtResource( 6 )
 texture_hover = ExtResource( 7 )
 
+[node name="SEPlayer" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
+bus = "SoundEffect"
+
+[node name="BGMPlayer" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
+
 [connection signal="pressed" from="ConfirmDialog/Dialog/Yes" to="." method="_on_Yes_pressed"]
 [connection signal="pressed" from="ConfirmDialog/Dialog/No" to="." method="_on_No_pressed"]

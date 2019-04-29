@@ -1,0 +1,105 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://Title/Title.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Title/Background.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Title/Button-Start.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Title/Button-Start-Hover.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Title/Button-Continue.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Title/Button-Continue-Hover.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Title/Button-Continue-Disabled.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Title/Agreement/Background.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Title/Agreement/ButtonUnderstand.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Title/Agreement/ButtonUnderstand-Hover.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Title/Agreement/ButtonAgree.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Title/Agreement/ButtonAgree-Hover.png" type="Texture" id=12]
+[ext_resource path="res://Assets/Others/SourceSansPro-Regular.ttf" type="DynamicFontData" id=13]
+
+[sub_resource type="DynamicFont" id=1]
+size = 46
+font_data = ExtResource( 13 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 39
+font_data = ExtResource( 13 )
+
+[node name="Title" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="Background" type="TextureRect" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 2 )
+
+[node name="Start" type="TextureButton" parent="."]
+margin_left = 713.0
+margin_top = 534.0
+margin_right = 1123.0
+margin_bottom = 663.0
+texture_normal = ExtResource( 3 )
+texture_hover = ExtResource( 4 )
+
+[node name="Continue" type="TextureButton" parent="."]
+margin_left = 714.0
+margin_top = 715.0
+margin_right = 1124.0
+margin_bottom = 844.0
+disabled = true
+texture_normal = ExtResource( 5 )
+texture_hover = ExtResource( 6 )
+texture_disabled = ExtResource( 7 )
+
+[node name="Agreement" type="TextureRect" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 658.0
+margin_top = 71.0
+margin_right = -32.0
+margin_bottom = -41.0
+texture = ExtResource( 8 )
+
+[node name="Understand" type="TextureButton" parent="Agreement"]
+margin_left = 56.0
+margin_top = 698.0
+margin_right = 285.0
+margin_bottom = 807.0
+texture_normal = ExtResource( 9 )
+texture_hover = ExtResource( 10 )
+
+[node name="Agree" type="TextureButton" parent="Agreement"]
+margin_left = 328.0
+margin_top = 698.0
+margin_right = 557.0
+margin_bottom = 807.0
+texture_normal = ExtResource( 11 )
+texture_hover = ExtResource( 12 )
+
+[node name="Text" type="RichTextLabel" parent="Agreement"]
+margin_left = 60.0
+margin_top = 42.0
+margin_right = 531.0
+margin_bottom = 690.0
+custom_fonts/bold_font = SubResource( 1 )
+custom_fonts/normal_font = SubResource( 2 )
+custom_colors/default_color = Color( 0.0901961, 0.211765, 0.345098, 1 )
+bbcode_enabled = true
+bbcode_text = "[b]             Agreement[/b]
+1. Your work is to DEBUG!!! Debug as much as you can.
+2. You need to follow a '996' work schedule!!!
+3. You must reach a basic goal every day.
+4. Never exhaust yourself, or I need to find a new employee.
+5. Enjoy the gym and vending machine."
+text = "             Agreement
+1. Your work is to DEBUG!!! Debug as much as you can.
+2. You need to follow a '996' work schedule!!!
+3. You must reach a basic goal every day.
+4. Never exhaust yourself, or I need to find a new employee.
+5. Enjoy the gym and vending machine."
+
+[connection signal="gui_input" from="Background" to="." method="_on_Background_gui_input"]
+[connection signal="pressed" from="Start" to="." method="_on_Start_pressed"]
+[connection signal="pressed" from="Continue" to="." method="_on_Continue_pressed"]
+[connection signal="pressed" from="Agreement/Understand" to="." method="_on_Agree_pressed"]
+[connection signal="pressed" from="Agreement/Agree" to="." method="_on_Agree_pressed"]

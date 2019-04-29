@@ -1,0 +1,130 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Work/Bug.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Work/Bugs/Harmonic.gd" type="Script" id=2]
+[ext_resource path="res://Work/Bugs/Polygon.gd" type="Script" id=3]
+
+[node name="Stage4" type="Node2D"]
+
+[node name="Bug" parent="." instance=ExtResource( 1 )]
+position = Vector2( 410, 415 )
+script = ExtResource( 2 )
+bug_type = 1
+size_min = 1.0
+size_max = 1.0
+auto_respawn = true
+speed_min = 450.0
+speed_max = 450.0
+amplitude_min = 60.0
+amplitude_max = 60.0
+period_min = 0.9
+period_max = 0.9
+flying_period = 1.8
+start_pos = Vector2( 410, 415 )
+direction = Vector2( 1, 0 )
+
+[node name="Bug8" parent="." instance=ExtResource( 1 )]
+position = Vector2( 500, 600 )
+script = ExtResource( 3 )
+bug_type = 2
+size_min = 1.0
+size_max = 1.0
+auto_respawn = true
+speed_min = 370.0
+speed_max = 370.0
+velocity_min = 1.0
+velocity_max = 1.0
+n_vertices = 0
+cycled = true
+vertices = [ Vector2( 500, 600 ), Vector2( 400, 600 ) ]
+
+[node name="Bug9" parent="." instance=ExtResource( 1 )]
+position = Vector2( 780, 600 )
+script = ExtResource( 3 )
+bug_type = 2
+size_min = 1.0
+size_max = 1.0
+auto_respawn = true
+speed_min = 370.0
+speed_max = 370.0
+velocity_min = 1.0
+velocity_max = 1.0
+n_vertices = 0
+cycled = true
+vertices = [ Vector2( 780, 600 ), Vector2( 880, 600 ) ]
+
+[node name="Bug3" parent="." instance=ExtResource( 1 )]
+position = Vector2( 400, 350 )
+script = ExtResource( 3 )
+bug_type = 1
+size_min = 1.0
+size_max = 1.0
+auto_respawn = true
+speed_min = 370.0
+speed_max = 370.0
+velocity_min = 1.0
+velocity_max = 1.0
+n_vertices = 0
+cycled = true
+vertices = [ Vector2( 400, 350 ), Vector2( 280, 350 ) ]
+
+[node name="Bug4" parent="." instance=ExtResource( 1 )]
+position = Vector2( 880, 350 )
+script = ExtResource( 3 )
+bug_type = 1
+size_min = 1.0
+size_max = 1.0
+auto_respawn = true
+speed_min = 370.0
+speed_max = 370.0
+velocity_min = 1.0
+velocity_max = 1.0
+n_vertices = 0
+cycled = true
+vertices = [ Vector2( 880, 350 ), Vector2( 1000, 350 ) ]
+
+[node name="Bug5" parent="." instance=ExtResource( 1 )]
+position = Vector2( 240, 270 )
+script = ExtResource( 3 )
+bug_type = 0
+size_min = 1.0
+size_max = 1.0
+auto_respawn = true
+speed_min = 480.0
+speed_max = 480.0
+velocity_min = 1.0
+velocity_max = 1.0
+n_vertices = 0
+cycled = true
+vertices = [ Vector2( 240, 270 ), Vector2( 400, 150 ), Vector2( 560, 270 ), Vector2( 720, 150 ), Vector2( 880, 270 ), Vector2( 1040, 150 ) ]
+
+[node name="Bug6" parent="." instance=ExtResource( 1 )]
+position = Vector2( 200, 125 )
+script = ExtResource( 3 )
+bug_type = 0
+size_min = 1.0
+size_max = 1.0
+auto_respawn = true
+speed_min = 430.0
+speed_max = 430.0
+velocity_min = 1.0
+velocity_max = 1.0
+n_vertices = 0
+cycled = true
+vertices = [ Vector2( 200, 125 ), Vector2( 150, 370 ) ]
+
+[node name="Bug7" parent="." instance=ExtResource( 1 )]
+position = Vector2( 1080, 125 )
+script = ExtResource( 3 )
+bug_type = 0
+size_min = 1.0
+size_max = 1.0
+auto_respawn = true
+speed_min = 430.0
+speed_max = 430.0
+velocity_min = 1.0
+velocity_max = 1.0
+n_vertices = 0
+cycled = true
+vertices = [ Vector2( 1080, 125 ), Vector2( 1130, 370 ) ]
+

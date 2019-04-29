@@ -2,22 +2,32 @@ extends Node2D
 
 class_name GameManager
 
-onready var work_prefab := preload("res://Work/Work.tscn")
-onready var shop_prefab := preload("res://Shop/Shop.tscn")
-onready var title_prefab := preload("res://Others/Title.tscn")
-onready var result_list_prefab := preload("res://Work/ResultList.tscn")
-var current_scene: Node = null
-
 enum SceneType {
     Unknown,
+    Opening,
     Title,
     Work,
     Shop,
     Ending
 }
-var current_scene_type = SceneType.Unknown
+var current_scene_type = SceneType.Unknown setget set_scene_type
+
+onready var opening_prefab := preload("res://Title/Opening.tscn")
+onready var work_prefab := preload("res://Work/Work.tscn")
+onready var shop_prefab := preload("res://Shop/Shop.tscn")
+onready var title_prefab := preload("res://Title/Title.tscn")
+onready var result_list_prefab := preload("res://Work/ResultList.tscn")
+onready var bgm_resources := {
+    SceneType.Opening: null,
+    SceneType.Title: preload("res://Assets/Audio/BGM-Title_Shop.ogg"),
+    SceneType.Shop: preload("res://Assets/Audio/BGM-Title_Shop.ogg"),
+    SceneType.Work: preload("res://Assets/Audio/BGM-Work.ogg"),
+    SceneType.Ending: preload("res://Assets/Audio/BGM-Ending.ogg")
+}
+var current_scene: Node = null
 
 var accumulated_score := 0
+var current_score := 0
 var money_balance := 0
 var last_life := 0
 var current_level := 0
@@ -26,16 +36,30 @@ var n_coffee := 0
 var paused := false
 
 var stage_settings = [
-    { "target_score": 50, "bug_trajs": [100], "n_bugs": 6 },
-    { "target_score": 100, "bug_trajs": [50, 50], "n_bugs": 5 },
-    { "target_score": 150, "bug_trajs": [25, 25, 50], "n_bugs": 3 },
-    { "target_score": 200, "bug_trajs": [30, 40, 30], "n_bugs": 4 }
+    { "target_score": 80, "bugs": "res://Stages/Stage1.tscn" },
+    { "target_score": 80, "bugs": "res://Stages/Stage2.tscn" },
+    { "target_score": 90, "bugs": "res://Stages/Stage3.tscn" },
+    { "target_score": 90, "bugs": "res://Stages/Stage4.tscn" },
+    { "target_score": 100, "bugs": "res://Stages/Stage5.tscn" },
+    { "target_score": 100, "bug_trajs": [30, 40, 30], "n_bugs": 6 },
+    { "target_score": 110, "bug_trajs": [10, 45, 45], "n_bugs": 5 },
+    { "target_score": 110, "bug_trajs": [20, 40, 40], "n_bugs": 5 }
 ]
 onready var n_stages = len(stage_settings)
 onready var scene_container = $Scene
 onready var confirm_dialog = $ConfirmDialog
 onready var confirm_dialog_text = $ConfirmDialog/Dialog/Text
+onready var bgm_player = $BGMPlayer
 
+
+func set_scene_type(value):
+    current_scene_type = value
+    var stream = bgm_resources[value]
+    if bgm_player.stream == stream and bgm_player.playing:
+        return
+    bgm_player.stream = stream
+    if bgm_player.stream != null:
+        bgm_player.play()
 
 func switch_scene(new_scene, type):
     if self.current_scene != null:
@@ -62,7 +86,6 @@ func prepare_stage(level=1):
     if level == 1:
         start_stage(1)
         return
-        # Start OP (Sign an agreement)
     var shop = shop_prefab.instance()
     shop.connect("buy", self, "_on_buy", [shop])
     shop.connect("next_day", self, "start_stage", [level])
@@ -70,19 +93,20 @@ func prepare_stage(level=1):
     shop.start(last_life, money_balance, buffs, n_coffee)
 
 func start_stage(level=1):
-    while n_stages < level:
-        var t = floor(log(level - n_stages)) * 5 + 50
-        stage_settings.push_back({
-            "target_score": stage_settings[n_stages-1]["target_score"] + t,
-            "bug_trajs": [30, 40, 30], "n_bugs": 5
-        })
-        n_stages = len(stage_settings)
+#    while n_stages < level:
+#        stage_settings.push_back({
+#            "target_score": floor(n_stages / 2) * 10 + 80,
+#            "bug_trajs": [30, 40, 30], "n_bugs": 5
+#        })
+#        n_stages = len(stage_settings)
+#    var stage_setting = stage_settings[level-1]
+    var stage_setting = stage_settings[(level-1) % n_stages].duplicate()
+    stage_setting["target_score"] = floor((level - 1) / 2) * 10 + 80
     self.current_level = level
-    var stage_setting = stage_settings[level-1]
     var work = self.work_prefab.instance()
     work.connect("game_over", self, "_on_game_over")
     switch_scene(work, SceneType.Work)
-    work.start(level, accumulated_score, buffs, n_coffee, stage_setting)
+    work.start(level, current_score, buffs, n_coffee, stage_setting)
 
 func _on_game_over(timeup: bool, work: Work):
     if timeup:
@@ -102,7 +126,8 @@ func _on_result_list_dismissed(success, new_balance, result_list):
     scene_container.remove_child(result_list)
     if success:
         var work = self.current_scene as Work
-        accumulated_score = work.score
+        accumulated_score += work.score
+        current_score = work.score - work.target_score
         money_balance = new_balance
         last_life = work.life
         buffs = work.buffs
@@ -117,7 +142,8 @@ func _on_result_list_dismissed(success, new_balance, result_list):
 func save_data():
     var data = {
         "version": Utils.VERSION_NUMBER,
-        "score": accumulated_score,
+        "accumulated_score": accumulated_score,
+        "score": current_score,
         "money": money_balance,
         "life": last_life,
         "level": current_level,
@@ -145,26 +171,42 @@ func load_saved_data():
     if data == null:
         return
     var level = int(data["level"])
-    accumulated_score = int(data["score"])
+    accumulated_score = int(data["accumulated_score"])
+    current_score = int(data["score"])
     last_life = int(data["life"])
     money_balance = int(data["money"])
     buffs = data["buffs"]
     n_coffee = int(data["coffee"])
     prepare_stage(level + 1)
 
+func clear_cached():
+    accumulated_score = 0
+    current_score = 0
+    money_balance = 0
+    last_life = 0
+    current_level = 0
+    buffs = [0, 0]
+    n_coffee = 0
+
 func start_title():
+    clear_cached()
     var title = title_prefab.instance()
     title.has_continue(get_saved_data() != null)
-    title.connect("start_pressed", self, "show_opening")
+    title.connect("start_pressed", self, "start_stage", [1])
     title.connect("continue_pressed", self, "load_saved_data")
     switch_scene(title, SceneType.Title)
 
 func show_opening():
-    # TODO: add Opening
-    start_stage(1)
+    var opening = opening_prefab.instance()
+    opening.connect("ended", self, "_on_opening_ended")
+    switch_scene(opening, SceneType.Opening)
+
+func _on_opening_ended():
+    start_title()
 
 func _ready():
-    start_title()
+    Utils.audio_player = $SEPlayer
+    show_opening()
 
 func pause():
     paused = true

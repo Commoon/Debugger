@@ -7,8 +7,7 @@ const MAX_LIFE := 100.0
 const BUFF1 := [1.0, 0.8, 0.7, 0.65, 0.6, 0.55, 0.5]
 const BUFF2 := [1.0, 1.2, 1.4, 1.55, 1.7, 1.85, 2.0]
 
-export var life_usage_factor := 0.04
-export var life_usage_miss := 20.0
+export var life_usage_factor := 0.03
 export var slacking_off_scale := 4.0
 export var coffee_buff := 15.0
 var min_time := 0
@@ -43,7 +42,7 @@ onready var bug_scripts := {
     BugType.Polygon: preload("res://Work/Bugs/Polygon.gd")
 }
 onready var player := $Player
-onready var bugs := $Bugs
+onready var bugs_node := $Bugs
 onready var life_bar := $UI/Life
 onready var hour_hand := $UI/Clock/Hour
 onready var mouse_pos: Vector2 = player.position + Vector2.UP
@@ -55,6 +54,11 @@ onready var bug_count_labels := [
 onready var coffee_count_label := $UI/CoffeeCounts/CountLabel
 onready var current_score_label := $UI/CurrentScore
 onready var coffee_drunk := false
+onready var target_point := $TargetPoint
+onready var goofing_off := $UI/GoofingOff
+onready var drink_prompt := $UI/DrinkPrompt
+
+var bugs_presets := {}
 
 
 func _process(delta):
@@ -63,15 +67,27 @@ func _process(delta):
 
 func start(level, score, buffs, n_coffee, stage_setting):
     self.target_score = stage_setting["target_score"]
-    self.bug_traj_probs = stage_setting["bug_trajs"]
-    self.n_bugs = stage_setting["n_bugs"]
-    for i in range(self.n_bugs):
-        generate_bug()
+    if stage_setting.has("bugs") and stage_setting["bugs"] != null:
+        var bugs_node = load(stage_setting["bugs"]).instance() as Node2D
+        var bugs = bugs_node.get_children()
+        self.n_bugs = len(bugs)
+        bugs_presets = {}
+        for bug in bugs:
+            bug.connect("tree_exiting", self, "_on_Bug_tree_exiting", [bug])
+            if bug.auto_respawn:
+                bugs_presets[bug.name] = bug.duplicate()
+        self.bugs_node.add_child(bugs_node)
+    else:
+        self.bug_traj_probs = stage_setting["bug_trajs"]
+        self.n_bugs = stage_setting["n_bugs"]
+        for i in range(self.n_bugs):
+            generate_bug()
     bug_counts = []
     for i in range(BugTypes.n_types):
         bug_counts.push_back(0)
     get_tree().paused = false
     self.started = true
+    goofing_off.visible = false
     $UI/Level/Number.text = str(level)
     self.level = level
     self.score = score
@@ -90,12 +106,19 @@ func set_life(value):
 func set_time(value):
     time = value
     hour_hand.rotation_degrees = (MAX_TIME - value) / MAX_TIME * 360 - 90
+    if coffee_count > 0 and not coffee_drunk and time - min_time <= 15 and \
+            score < target_score and not drink_prompt.visible:
+        drink_prompt.show()
+        drink_prompt.get_node("AnimationPlayer").play("Flash")
     if time <= min_time:
         self.end(true)
 
 func set_score(value):
     score = value
     current_score_label.text = str(score)
+    if score >= target_score and not goofing_off.visible:
+        goofing_off.show()
+        goofing_off.get_node("AnimationPlayer").play("Flash")
 
 func set_coffee(value):
     coffee_count = value
@@ -115,11 +138,19 @@ func generate_bug():
     var i = Utils.multinomial(bug_traj_probs)
     var bug = self.bug_prefab.instance()
     bug.set_script(self.bug_scripts[i])
-    bug.connect("tree_exiting", self, "_on_Bug_tree_exiting")
-    bugs.call_deferred("add_child", bug)
+    bug.connect("tree_exiting", self, "_on_Bug_tree_exiting", [bug])
+    bugs_node.call_deferred("add_child", bug)
 
-func _on_Bug_tree_exiting():
-    generate_bug()
+func _on_Bug_tree_exiting(bug: Bug):
+    if not bug.auto_respawn:
+        generate_bug()
+    else:
+        Timers.set_timeout(bug.respawn_time, self, "respawn", bug.name)
+
+func respawn(bug_name):
+    var new_bug = bugs_presets[bug_name].duplicate()
+    new_bug.connect("tree_exiting", self, "_on_Bug_tree_exiting", [new_bug])
+    bugs_node.call_deferred("add_child", new_bug)
     
 func rotate_player():
     var direction = mouse_pos - self.player.position
@@ -131,8 +162,14 @@ func _input(event):
         if self.player.attacking == 0:
             rotate_player()
     elif event is InputEventMouseButton and event.button_index == BUTTON_LEFT and not event.pressed:
-        var direction = event.position - self.player.position
-        self.player.attack(direction.normalized())
+        var direction = (event.position - self.player.position)
+        if direction.length() <= player.body_radius + 16 or not self.player.can_attack():
+            return
+        direction = direction.normalized()
+        target_point.position = event.position + direction * 16
+        target_point.visible = true
+        Utils.play_sound(Utils.SoundEffect.Tongue)
+        self.player.attack(direction)
     elif event is InputEventKey:
         if event.scancode == KEY_Z:
             if player.attacking > 0:
@@ -166,10 +203,13 @@ func _on_Player_debugged(bug: Bug):
     bug.destroy()
 
 func _on_Player_catched(bug: Bug):
+    target_point.visible = false
+    Utils.play_sound(Utils.SoundEffect.Hit)
     self.life_usage_current = (bug.global_position - player.position).length() * self.life_usage_factor
 
-func _on_Player_missed():
-    self.life_usage_current = self.life_usage_miss
+func _on_Player_missed(pos: Vector2):
+    target_point.visible = false
+    self.life_usage_current = (pos - player.position).length() * self.life_usage_factor
     
 func _on_Player_attack_over():
     self.life -= self.life_usage_current * attack_life_scale
