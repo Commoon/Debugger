@@ -182,4 +182,6 @@ func end(timeup):
     self.started = false
     get_tree().paused = true
     life = floor(life)
+    if life == 0:
+        life = 1
     emit_signal("game_over", timeup, self)

@@ -62,7 +62,7 @@ func prepare_stage(level=1):
     if level == 1:
         start_stage(1)
         return
-        # Start OP
+        # Start OP (Sign an agreement)
     var shop = shop_prefab.instance()
     shop.connect("buy", self, "_on_buy", [shop])
     shop.connect("next_day", self, "start_stage", [level])
