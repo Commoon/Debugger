@@ -9,13 +9,15 @@ export var cycled := false
 
 onready var speed := rand_range(speed_min, speed_max)
 
-export var vertices := []
-var velocities := []
+export var vertices: Array
+var velocities: Array
+var current_speed := 0.0
 var direction: Vector2
 
 
 func _ready():
     if len(vertices) == 0:
+        vertices = []
         velocities = []
         vertices.push_back(Utils.random_pos_border())
         velocities.push_back(speed)
@@ -28,6 +30,7 @@ func _ready():
         var difficulty = pow(1 - (1 - (speed - speed_min) / (speed_max - speed_min)), 2)
         .start(vertices[0], difficulty)
     else:
+        vertices = vertices.duplicate()
         velocities = []
         while len(velocities) < len(vertices):
             velocities.push_back(speed * rand_range(velocity_min, velocity_max))
@@ -43,10 +46,11 @@ func move_to_next():
     elif len(vertices) == 0:
         return
     direction = (vertices[0] - current_pos).normalized()
+    current_speed = current_v
     .set_rotate(direction)
 
 func update_func(dt):
-    var to_move = direction * velocities[0] * dt
+    var to_move = direction * current_speed * dt
     var new_pos = self.position + to_move
     if len(vertices) > 0 and (vertices[0] - new_pos).dot(to_move) <= 0:
         new_pos = vertices[0]

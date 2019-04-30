@@ -38,12 +38,17 @@ var paused := false
 var stage_settings = [
     { "target_score": 80, "bugs": "res://Stages/Stage1.tscn" },
     { "target_score": 80, "bugs": "res://Stages/Stage2.tscn" },
-    { "target_score": 90, "bugs": "res://Stages/Stage3.tscn" },
-    { "target_score": 90, "bugs": "res://Stages/Stage4.tscn" },
-    { "target_score": 100, "bugs": "res://Stages/Stage5.tscn" },
-    { "target_score": 100, "bug_trajs": [30, 40, 30], "n_bugs": 6 },
-    { "target_score": 110, "bug_trajs": [10, 45, 45], "n_bugs": 5 },
-    { "target_score": 110, "bug_trajs": [20, 40, 40], "n_bugs": 5 }
+    { "target_score": 90, "bugs": "res://Stages/Stage5.tscn" },
+    # Some stages are swapped for better getting the game.
+    { "target_score": 90, "bug_trajs": [30, 40, 30], "n_bugs": 6 },
+    { "target_score": 100, "bug_trajs": [20, 40, 40], "n_bugs": 5 },
+
+    { "target_score": 100, "bugs": "res://Stages/Stage4.tscn" },
+    { "target_score": 110, "bugs": "res://Stages/Stage3.tscn" },
+
+    { "target_score": 110, "bug_trajs": [20, 20, 20, 40], "n_bugs": 5 },
+    { "target_score": 120, "bug_trajs": [20, 30, 40, 10], "n_bugs": 5 },
+    { "target_score": 120, "bug_trajs": [10, 40, 40, 10], "n_bugs": 5 }
 ]
 onready var n_stages = len(stage_settings)
 onready var scene_container = $Scene
@@ -192,7 +197,7 @@ func start_title():
     clear_cached()
     var title = title_prefab.instance()
     title.has_continue(get_saved_data() != null)
-    title.connect("start_pressed", self, "start_stage", [1])
+    title.connect("start_pressed", self, "prepare_stage", [1])
     title.connect("continue_pressed", self, "load_saved_data")
     switch_scene(title, SceneType.Title)
 
@@ -225,6 +230,10 @@ func resume():
 func _input(event):
     if event.is_action_pressed("toggle_fullscreen"):
         OS.window_fullscreen = !OS.window_fullscreen
+    elif OS.is_debug_build() and event.is_action_pressed("take_screenshot"):
+        var image = get_viewport().get_texture().get_data()
+        image.flip_y()
+        image.save_png("res://screenshot.png")
     elif not paused and event is InputEventKey and event.scancode == KEY_ESCAPE:
         pause()
 

@@ -27,7 +27,7 @@ var started := false
 var is_slacking_off := false
 
 enum BugType {
-    Linear, Harmonic, Polygon
+    Linear, Harmonic, Polygon, Circle
 }
 
 var bug_traj_probs := []
@@ -39,7 +39,8 @@ onready var bug_prefab := preload("res://Work/Bug.tscn")
 onready var bug_scripts := {
     BugType.Linear: preload("res://Work/Bugs/Linear.gd"),
     BugType.Harmonic: preload("res://Work/Bugs/Harmonic.gd"),
-    BugType.Polygon: preload("res://Work/Bugs/Polygon.gd")
+    BugType.Polygon: preload("res://Work/Bugs/Polygon.gd"),
+    BugType.Circle: preload("res://Work/Bugs/Circle.gd")
 }
 onready var player := $Player
 onready var bugs_node := $Bugs
