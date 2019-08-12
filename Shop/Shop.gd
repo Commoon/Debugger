@@ -45,7 +45,7 @@ func _on_NextDay_pressed():
 func _on_item_pressed(in_life_shop, item_id, pos_node):
     var item = (life_shop if in_life_shop else money_shop)[item_id]
     dialog.get_node("Label").text = item["description"] + "\n" + (
-        ("Exercise timess: " + str(buffs[item_id])) if in_life_shop else ("Bought: " + str(n_coffee))
+        ("Exercise times: " + str(buffs[item_id])) if in_life_shop else ("Bought: " + str(n_coffee))
     ) + "\n" + (
         "Spend Life to exercise." if in_life_shop else "Purchase with Salary."
     )

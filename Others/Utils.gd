@@ -23,7 +23,7 @@ const OUT_DOWN = IN_HEIGHT - OUT_UP
 const OUT_WIDTH = OUT_RIGHT - OUT_LEFT
 const OUT_HEIGHT = OUT_DOWN - OUT_UP
 
-const VERSION_NUMBER = "0.2.5"
+const VERSION_NUMBER = "0.2.7"
 const SAVE_FILENAME = "user://data.save"
 
 const CHAR_TEXTURES = {
